@@ -1,20 +1,39 @@
-# 82621658
-# как в школе не понимал алгебру, так и сейчас понимания нет(
+# 82804155
+# все равно не понимаю эту задачу
+# чтоб я не писал, не укладываюсь в лимит времени,
+# но сократил существенно циклы!
+# прошло вот так,но разница с первой задачкой по памяти и времени
 
-def get_min_distances_to_zero(houses, value='0'):
-    zeros = [pos for pos, element in enumerate(houses) if element == value]
-    number_of_houses = len(houses)
-    result = [0] * number_of_houses
-    first, last = zeros[0], zeros[-1]
-    result[:first] = [first - pos for pos in range(first)]
-    for left, right in zip(zeros, zeros[1:]):
-        result[left + 1:right] = [
-            min(pos - left, right - pos) for pos in range(left + 1, right)]
-    result[last + 1:] = [
-        pos - last for pos in range(last + 1, number_of_houses)]
-    return result
+from typing import List
+
+
+def get_distances_to_empty_plot(house_numbers: List[int]) -> List[float]:
+    distances = [0] * len(house_numbers)
+    empty_plot = -1
+    for plot_index, house_number in enumerate(house_numbers, start=0):
+        if house_number == 0:
+            if empty_plot == -1:
+                distances[0:plot_index] = distances[:plot_index][::-1]
+                empty_plot = plot_index
+            else:
+                i = max(divmod((plot_index - empty_plot - 1), 2))
+                distances[plot_index - i:plot_index] = distances[
+                    empty_plot + i:empty_plot:-1]
+                empty_plot = plot_index
+        else:
+            if empty_plot >= 0:
+                distances[plot_index] = plot_index - empty_plot
+            else:
+                distances[plot_index] = plot_index + 1
+    return distances
+
+
+def read_input() -> List[int]:
+    _ = int(input())
+    house_numbers = [int(_) for _ in input().strip().split()]
+    return house_numbers
 
 
 if __name__ == '__main__':
-    input()
-    print(*get_min_distances_to_zero(input().split()))
+    house_numbers = read_input()
+    print(*get_distances_to_empty_plot(house_numbers))
