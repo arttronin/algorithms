@@ -1,4 +1,4 @@
-# 83353773
+# 83527508
 class Dec:
 
     def __init__(self, max_size):
@@ -55,7 +55,3 @@ if __name__ == '__main__':
                 print(result)
         except IndexError:
             print('error')
-        except AttributeError:
-            raise AttributeError(f'Некорректный атрибут {action} для {deque}')
-
-# теория к концу все хуже и хуже, спасибо youtube за помощь)

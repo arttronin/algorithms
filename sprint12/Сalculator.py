@@ -1,4 +1,4 @@
-# 83448446
+# 83531100
 # использую модель operator, почитал так же про lambda-функцию.
 # На мой взгляд, модуль оператор в коде смотрится более читаемым и понятным
 
@@ -29,17 +29,14 @@ class Stack:
             raise IndexError('В хранилище отсутствуют элементы')
 
 
-def calculator(symbols, stack=None, actions=OPERATIONS, digitizer=int):
-    stack = Stack() if stack is None else stack
+def calculator(symbols):
+    stack = Stack()
     for symbol in symbols:
-        if symbol in actions:
+        try:
+            stack.push(int(symbol))
+        except ValueError:
             operand_1, operand_2 = stack.pop(), stack.pop()
-            stack.push(actions[symbol](operand_2, operand_1))
-        else:
-            try:
-                stack.push(digitizer(symbol))
-            except ValueError:
-                raise ValueError(f'Передан некорректный символ: {symbol}')
+            stack.push(OPERATIONS[symbol](operand_2, operand_1))
     return stack.pop()
 
 
